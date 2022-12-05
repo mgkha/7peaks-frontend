@@ -8,3 +8,8 @@ export type Article = {
   webPublicationDate: string;
   fields: any;
 };
+
+export type Category = {
+  categoryName: string;
+  results: Article[];
+};

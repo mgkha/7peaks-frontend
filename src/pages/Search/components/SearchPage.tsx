@@ -3,7 +3,7 @@ import { ActionGroup } from "@/components/Elements/ActionGroup/ActionGroup";
 import { ContentLayout, MainLayout } from "@/components/Layout";
 import useInfiniteScroll from "@/hooks/use-infinite-scroll";
 import { useLoading } from "@/hooks/use-loading";
-import { Article } from "@/pages/Home";
+import { Article } from "@/pages/Article";
 import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { SearchResult } from "./SearchResults";

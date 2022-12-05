@@ -3,6 +3,9 @@ import * as React from "react";
 import { ErrorBoundary } from "react-error-boundary";
 import { HelmetProvider } from "react-helmet-async";
 import { BrowserRouter as Router } from "react-router-dom";
+import { QueryClientProvider } from "react-query";
+import { ReactQueryDevtools } from "react-query/devtools";
+import { queryClient } from "@/lib/react-query";
 
 const ErrorFallback = () => {
   return (
@@ -33,7 +36,10 @@ export const AppProvider = ({ children }: AppProviderProps) => {
     >
       <ErrorBoundary FallbackComponent={ErrorFallback}>
         <HelmetProvider>
-          <Router>{children}</Router>
+          <QueryClientProvider client={queryClient}>
+            {process.env.NODE_ENV !== "test" && <ReactQueryDevtools />}
+            <Router>{children}</Router>
+          </QueryClientProvider>
         </HelmetProvider>
       </ErrorBoundary>
     </React.Suspense>

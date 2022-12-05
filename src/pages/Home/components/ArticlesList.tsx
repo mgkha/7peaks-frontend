@@ -2,6 +2,7 @@ import {
   ArticleCard,
   ArticleCardThumbnail,
 } from "@/components/Elements/ArticleCard";
+import { Article, Category } from "@/pages/Article";
 import { createSearchParams } from "react-router-dom";
 import {
   a1,
@@ -16,7 +17,6 @@ import {
   categorySection,
   categoryTitle,
 } from "../styles/articleslist.css";
-import { Article, Category } from "../types";
 
 export const ArticlesList = ({ articles, categoryNews }: any) => {
   return (

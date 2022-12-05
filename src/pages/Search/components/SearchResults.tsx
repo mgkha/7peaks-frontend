@@ -1,5 +1,5 @@
 import { ArticleCardThumbnail, Spinner } from "@/components/Elements";
-import { Article } from "@/pages/Home";
+import { Article } from "@/pages/Article";
 import { createSearchParams } from "react-router-dom";
 import {
   categoryContainer,
