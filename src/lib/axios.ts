@@ -4,8 +4,8 @@ import Axios, { AxiosRequestConfig } from "axios";
 function authRequestInterceptor(config: AxiosRequestConfig) {
   config.headers = {
     Accept: "application/json",
-    "api-key": GUARDIAN_API_KEY,
   };
+  config.params["api-key"] = GUARDIAN_API_KEY;
   return config;
 }
 

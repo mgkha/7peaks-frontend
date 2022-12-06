@@ -16,11 +16,9 @@
 
 3. Bingo!
 
-## Notes
+## Troubleshoot
 
-- Need a proxy server to consume guardian apis because of CORS issue from endpoint
-
-- Set `USE_LOCAL_PROXY` to `false` inside config/index.ts to use original endpoint
+- In case of CORS issue from endpoint, set `USE_LOCAL_PROXY` to `true` inside config/index.ts
 
 ## This project is focused on
 

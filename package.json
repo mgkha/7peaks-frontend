@@ -14,11 +14,13 @@
     "@types/react-dom": "^18.0.9",
     "@types/react-query": "^1.2.9",
     "@types/react-transition-group": "^4.4.5",
+    "@types/testing-library__jest-dom": "^5.14.5",
     "@types/uuid": "^9.0.0",
     "@vanilla-extract/css": "^1.9.2",
     "@vanilla-extract/webpack-plugin": "^2.2.0",
     "axios": "^1.2.1",
     "cross-env": "^7.0.3",
+    "faker": "^6.6.6",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-error-boundary": "^3.1.4",
@@ -48,6 +50,19 @@
     "build": "cross-env craco build",
     "test": "cross-env craco test",
     "eject": "cross-env craco eject"
+  },
+  "jest": {
+    "moduleNameMapper": {
+      "^@/(.+)": "<rootDir>/src/$1",
+      "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/__mocks__/fileMock.js",
+      "\\.(css|less|css.ts|css.js)$": "<rootDir>/__mocks__/styleMock.js"
+    },
+    "collectCoverageFrom": [
+      "src/**/*.{js,jsx,ts,tsx}",
+      "!src/**/*.d.ts",
+      "!src/**/*.stories.{js,jsx,ts,tsx}",
+      "!src/test/**/*.{js,jsx,ts,tsx}"
+    ]
   },
   "eslintConfig": {
     "extends": [
