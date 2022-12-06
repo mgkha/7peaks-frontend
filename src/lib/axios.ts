@@ -11,15 +11,15 @@ function authRequestInterceptor(config: AxiosRequestConfig) {
 export const axios = Axios.create();
 
 axios.interceptors.request.use(authRequestInterceptor);
-axios.interceptors.response.use(
-  (response) => {
-    return response.data;
-  },
-  (error) => {
-    const message = error.response?.data?.message || error.message;
+// axios.interceptors.response.use(
+//   (response) => {
+//     return response.data;
+//   },
+//   (error) => {
+//     const message = error.response?.data?.message || error.message;
 
-    window.alert(message);
+//     window.alert(message);
 
-    return Promise.reject(error);
-  }
-);
+//     return Promise.reject(error);
+//   }
+// );

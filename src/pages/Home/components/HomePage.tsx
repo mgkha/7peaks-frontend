@@ -1,51 +1,37 @@
-import getTopStories from "@/actions/getTopStories";
+import { Spinner } from "@/components/Elements";
 import { ActionGroup } from "@/components/Elements/ActionGroup/ActionGroup";
-import { ContentLayout, MainLayout } from "@/components/Layout";
-import { useLoading } from "@/hooks/use-loading";
-import { Article, Category } from "@/pages/Article";
-import { useEffect, useState } from "react";
+import { ContentLayout } from "@/components/Layout";
+import { useState } from "react";
 import { useTopArticles } from "../api/getArticles";
 import { ArticlesList } from "./ArticlesList";
 
-const sections = ["sport", "culture", "lifeandstyle"];
-
 export const HomePage = () => {
-  const [articles, setArticles] = useState<Article[]>([]);
   const [orderBy, setOrderBy] = useState("newest");
-  const [, setLoading] = useLoading();
-  const [categoryNews, setCategoryNews] = useState<Category[]>([]);
-  const articlesQuery = useTopArticles({ orderBy });
+  const newsQuery = useTopArticles({ section: "news", orderBy });
+  const sportQuery = useTopArticles({ section: "sport", orderBy });
+  const cultureQuery = useTopArticles({ section: "culture", orderBy });
+  const lifeStyleQuery = useTopArticles({ section: "lifeandstyle", orderBy });
 
-  useEffect(() => {
-    console.log(articlesQuery);
-  }, [orderBy]);
-
-  // useEffect(() => {
-  //   setLoading(true);
-
-  //   Promise.all([
-  //     getTopStories({ orderBy }).then(({ results }) => setArticles(results)),
-  //     Promise.all([
-  //       ...sections.map((section) =>
-  //         getTopStories({ section, pageSize: 3, orderBy })
-  //       ),
-  //     ]).then((response) => {
-  //       setCategoryNews(
-  //         response.map(({ results }, index) => ({
-  //           categoryName: sections[index],
-  //           results,
-  //         }))
-  //       );
-  //     }),
-  //   ]).then(() => setLoading(false));
-  // }, [orderBy, setLoading]);
+  if (
+    newsQuery.isLoading ||
+    sportQuery.isLoading ||
+    cultureQuery.isLoading ||
+    lifeStyleQuery.isLoading
+  ) {
+    return <Spinner />;
+  }
 
   return (
-    <MainLayout>
-      <ContentLayout title="Top stories">
-        <ActionGroup orderBy={orderBy} handleOnChangeOrderBy={setOrderBy} />
-        <ArticlesList articles={articles} categoryNews={categoryNews} />
-      </ContentLayout>
-    </MainLayout>
+    <ContentLayout title="Top stories">
+      <ActionGroup orderBy={orderBy} handleOnChangeOrderBy={setOrderBy} />
+      <ArticlesList
+        articles={newsQuery.data}
+        categoryNews={[
+          { categoryName: "sport", results: sportQuery.data },
+          { categoryName: "culture", results: cultureQuery.data },
+          { categoryName: "lifestyle", results: lifeStyleQuery.data },
+        ]}
+      />
+    </ContentLayout>
   );
 };

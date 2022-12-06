@@ -1,15 +1,31 @@
-import { useQueries, useQuery } from "react-query";
+import { useQuery } from "react-query";
 
 import { axios } from "@/lib/axios";
-import { ExtractFnReturnType, QueryConfig } from "@/lib/react-query";
 import { Article } from "@/pages/Article";
+import { ExtractFnReturnType } from "@/lib/react-query";
 
-export const getArticles = (
+interface Response {
+  status: string;
+  userTier: string;
+  total: number;
+  startIndex: number;
+  pageSize: number;
+  currentPage: number;
+  pages: number;
+  orderBy: string;
+  results: Article[];
+}
+
+interface ResponseData {
+  response: Response;
+}
+
+export const getArticles = async (
   section: string,
   pageSize: number,
   orderBy: string
 ): Promise<Article[]> => {
-  return axios.get(`/search`, {
+  const { data } = await axios.get<ResponseData>(`/search`, {
     params: {
       section,
       page: 1,
@@ -18,31 +34,19 @@ export const getArticles = (
       "order-by": orderBy,
     },
   });
+  return data.response.results;
 };
 
 type QueryFnType = typeof getArticles;
 
 type UseArticlesOptions = {
+  section: string;
   orderBy: string;
 };
 
-export const useTopArticles = ({ orderBy }: UseArticlesOptions) => {
-  return useQueries<ExtractFnReturnType<QueryFnType>>([
-    {
-      queryKey: ["articles_news"],
-      queryFn: () => getArticles("news", 8, orderBy),
-    },
-    {
-      queryKey: ["articles_sport"],
-      queryFn: () => getArticles("sport", 8, orderBy),
-    },
-    {
-      queryKey: ["articles_culture"],
-      queryFn: () => getArticles("culture", 8, orderBy),
-    },
-    {
-      queryKey: ["articles_lifeandstyle"],
-      queryFn: () => getArticles("lifeandstyle", 8, orderBy),
-    },
-  ]);
+export const useTopArticles = ({ section, orderBy }: UseArticlesOptions) => {
+  return useQuery<ExtractFnReturnType<QueryFnType>>({
+    queryKey: [`articles`, { section, orderBy }],
+    queryFn: () => getArticles(section, 8, orderBy),
+  });
 };

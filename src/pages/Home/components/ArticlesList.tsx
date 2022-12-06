@@ -18,7 +18,7 @@ import {
   categoryTitle,
 } from "../styles/articleslist.css";
 
-export const ArticlesList = ({ articles, categoryNews }: any) => {
+export const ArticlesList = ({ articles = [], categoryNews = [] }: any) => {
   return (
     <div>
       <div className={articleSection}>

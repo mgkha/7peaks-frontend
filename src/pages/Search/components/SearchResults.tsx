@@ -7,7 +7,17 @@ import {
   scrollSpinner,
 } from "../styles/index.css";
 
-export const SearchResult = ({ searchResult, isFetching, hasMore }: any) => {
+type SearchResultProps = {
+  searchResult: Article[] | undefined;
+  isFetchingNextPage: boolean;
+  hasNextPage: boolean | undefined;
+};
+
+export const SearchResult = ({
+  searchResult = [],
+  isFetchingNextPage,
+  hasNextPage,
+}: SearchResultProps) => {
   return (
     <div className={categorySection}>
       <div className={categoryContainer}>
@@ -20,11 +30,11 @@ export const SearchResult = ({ searchResult, isFetching, hasMore }: any) => {
           />
         ))}
       </div>
-      {isFetching ? (
+      {isFetchingNextPage ? (
         <Spinner className={scrollSpinner} />
       ) : (
         // <span style={{ fontSize: "3rem" }}>Loading ...</span>
-        hasMore === false && (
+        hasNextPage === false && (
           <span style={{ fontSize: "3rem" }}>End of Result</span>
         )
       )}

@@ -1,7 +1,7 @@
 import { AppProvider } from "@/providers/app";
 import { AppRoutes } from "@/routes";
-import { LoadingProvider } from "./providers/loading";
-import { SnackbarProvider } from "./providers/snackbar";
+import { LoadingProvider } from "@/providers/loading";
+import { SnackbarProvider } from "@/providers/snackbar";
 
 function App() {
   return (

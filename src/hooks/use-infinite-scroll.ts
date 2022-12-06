@@ -1,17 +1,32 @@
 import { useCallback, useEffect, useState } from "react";
 
-const useInfiniteScroll = ({ onScrollCallback, hasMore }: any) => {
-  const [isFetching, setIsFetching] = useState<boolean>(false);
+type UseInfiniteScrollProps = {
+  onScrollCallback: () => void;
+  isFetchingNextPage: boolean;
+  hasNextPage: boolean | undefined;
+};
+
+const useInfiniteScroll = ({
+  onScrollCallback,
+  isFetchingNextPage,
+  hasNextPage,
+}: UseInfiniteScrollProps) => {
+  const [doScroll, setDoScroll] = useState<boolean>(false);
 
   const isScrolling = useCallback(() => {
     if (
       window.innerHeight + document.documentElement.scrollTop + 50 >=
         document.documentElement.offsetHeight &&
-      hasMore
+      isFetchingNextPage === false &&
+      hasNextPage
     ) {
-      setIsFetching(true);
+      setDoScroll(true);
     }
-  }, [hasMore]);
+  }, [hasNextPage, isFetchingNextPage]);
+
+  useEffect(() => {
+    if (isFetchingNextPage === false) setDoScroll(false);
+  }, [isFetchingNextPage]);
 
   useEffect(() => {
     window.addEventListener("scroll", isScrolling);
@@ -19,9 +34,7 @@ const useInfiniteScroll = ({ onScrollCallback, hasMore }: any) => {
   }, [isScrolling]);
 
   useEffect(() => {
-    if (isFetching) onScrollCallback();
-  }, [isFetching, onScrollCallback]);
-
-  return [isFetching, setIsFetching] as const;
+    if (doScroll) onScrollCallback();
+  }, [doScroll, onScrollCallback]);
 };
 export default useInfiniteScroll;
