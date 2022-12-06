@@ -1,5 +1,5 @@
 import { Spinner } from "@/components/Elements";
-import { ActionGroup } from "@/components/Elements/ActionGroup/ActionGroup";
+import { ActionGroup } from "@/components/Elements";
 import { ContentLayout } from "@/components/Layout";
 import { useState } from "react";
 import { useTopArticles } from "../api/getArticles";

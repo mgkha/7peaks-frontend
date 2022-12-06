@@ -22,7 +22,7 @@
 
 ## This project is focused on
 
-- Production ready
+- Mobile Responsive; Production ready
 - Clean code and easy to maintain
 - Organized file structure
 - No complex state management

@@ -5,6 +5,7 @@
   "dependencies": {
     "@craco/craco": "^7.0.0",
     "@tanstack/react-query": "^4.19.1",
+    "@tanstack/react-query-devtools": "^4.19.1",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
@@ -12,7 +13,6 @@
     "@types/node": "^17.0.45",
     "@types/react": "^18.0.26",
     "@types/react-dom": "^18.0.9",
-    "@types/react-query": "^1.2.9",
     "@types/react-transition-group": "^4.4.5",
     "@types/testing-library__jest-dom": "^5.14.5",
     "@types/uuid": "^9.0.0",
@@ -20,7 +20,6 @@
     "@vanilla-extract/webpack-plugin": "^2.2.0",
     "axios": "^1.2.1",
     "cross-env": "^7.0.3",
-    "faker": "^6.6.6",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-error-boundary": "^3.1.4",

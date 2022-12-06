@@ -1,23 +1,19 @@
-import { Spinner } from "@/components/Elements";
 import * as React from "react";
 import { ErrorBoundary } from "react-error-boundary";
 import { HelmetProvider } from "react-helmet-async";
 import { BrowserRouter as Router } from "react-router-dom";
-import { QueryClientProvider } from "react-query";
-import { ReactQueryDevtools } from "react-query/devtools";
+import { QueryClientProvider } from "@tanstack/react-query";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { queryClient } from "@/lib/react-query";
+import { Spinner, ErrorFallback } from "@/components/Elements";
 
-const ErrorFallback = () => {
+type OfflineStatusProps = {
+  isOffline: boolean;
+};
+
+const OfflineStatus = ({ isOffline }: OfflineStatusProps) => {
   return (
-    <div
-      className="text-red-500 w-screen h-screen flex flex-col justify-center items-center"
-      role="alert"
-    >
-      <h2 className="text-lg font-semibold">Ooops, something went wrong :( </h2>
-      <button onClick={() => window.location.assign(window.location.origin)}>
-        Refresh
-      </button>
-    </div>
+    <>{isOffline && <div className="offline-banner">You are offline</div>}</>
   );
 };
 
@@ -26,14 +22,15 @@ type AppProviderProps = {
 };
 
 export const AppProvider = ({ children }: AppProviderProps) => {
+  const [isOffline, setIsOffline] = React.useState(!navigator.onLine);
+
+  // Listen for changes in the browser's online/offline status
+  window.addEventListener("offline", () => setIsOffline(true));
+  window.addEventListener("online", () => setIsOffline(false));
+
   return (
-    <React.Suspense
-      fallback={
-        <div className="flex items-center justify-center w-screen h-screen">
-          <Spinner />
-        </div>
-      }
-    >
+    <React.Suspense fallback={<Spinner />}>
+      <OfflineStatus isOffline={isOffline} />
       <ErrorBoundary FallbackComponent={ErrorFallback}>
         <HelmetProvider>
           <QueryClientProvider client={queryClient}>

@@ -4,14 +4,17 @@ import {
   UseQueryOptions,
   UseMutationOptions,
   DefaultOptions,
-} from "react-query";
+} from "@tanstack/react-query";
 import { PromiseValue } from "type-fest";
 
 const queryConfig: DefaultOptions = {
   queries: {
     useErrorBoundary: true,
     refetchOnWindowFocus: false,
-    retry: false,
+    retry: 10,
+    cacheTime: 1000 * 60 * 60 * 24, // 24 hours before stale,
+    keepPreviousData: true,
+    networkMode: "offlineFirst",
   },
 };
 

@@ -1,7 +1,7 @@
 import {
   ArticleCard,
   ArticleCardThumbnail,
-} from "@/components/Elements/ArticleCard";
+} from "@/components/Elements";
 import { Article, Category } from "@/pages/Article";
 import { createSearchParams } from "react-router-dom";
 import {

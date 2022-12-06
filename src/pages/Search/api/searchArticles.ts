@@ -1,10 +1,10 @@
-import { useInfiniteQuery } from "react-query";
+import { useInfiniteQuery } from "@tanstack/react-query";
 
 import { axios } from "@/lib/axios";
 import { Article } from "@/pages/Article";
 import { ExtractFnReturnType } from "@/lib/react-query";
 
-interface Response {
+export interface PageResponse {
   status: string;
   userTier: string;
   total: number;
@@ -17,7 +17,7 @@ interface Response {
 }
 
 interface ResponseData {
-  response: Response;
+  response: PageResponse;
 }
 
 export const getInfiniteArticles = async (
@@ -26,7 +26,7 @@ export const getInfiniteArticles = async (
   orderBy: string,
   pageSize: number,
   page: number
-): Promise<Response> => {
+): Promise<PageResponse> => {
   const { data } = await axios.get<ResponseData>(`/search`, {
     params: {
       q,
@@ -71,11 +71,11 @@ export const useSearchArticles = ({
     ],
     queryFn: ({ pageParam = 1 }) =>
       getInfiniteArticles(q, queryFields, orderBy, 15, pageParam),
-    getNextPageParam: (lastPage, allPages) => {
+    getNextPageParam: (lastPage: PageResponse) => {
       let nextPage = lastPage.currentPage + 1;
       if (nextPage <= lastPage.pages) return nextPage;
     },
-    getPreviousPageParam: (firstPage, allPages) => {
+    getPreviousPageParam: (firstPage: PageResponse) => {
       let prevPage = firstPage.currentPage - 1;
       if (prevPage > 1) return prevPage;
     },

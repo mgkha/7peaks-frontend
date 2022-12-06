@@ -1,9 +1,9 @@
-import { ActionGroup } from "@/components/Elements/ActionGroup/ActionGroup";
+import { ActionGroup } from "@/components/Elements";
 import { ContentLayout } from "@/components/Layout";
 import useInfiniteScroll from "@/hooks/use-infinite-scroll";
 import { useCallback, useState } from "react";
 import { useSearchParams } from "react-router-dom";
-import { useSearchArticles } from "../api/searchArticles";
+import { PageResponse, useSearchArticles } from "../api/searchArticles";
 import { SearchResult } from "./SearchResults";
 
 export const SearchPage = () => {
@@ -30,7 +30,9 @@ export const SearchPage = () => {
     <ContentLayout title="Search result">
       <ActionGroup orderBy={orderBy} handleOnChangeOrderBy={setOrderBy} />
       <SearchResult
-        searchResult={data?.pages.map((page) => page.results).flat()}
+        searchResult={data?.pages
+          .map((page: PageResponse) => page.results)
+          .flat()}
         isFetchingNextPage={isFetchingNextPage}
         hasNextPage={hasNextPage}
       />

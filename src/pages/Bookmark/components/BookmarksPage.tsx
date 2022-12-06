@@ -1,4 +1,4 @@
-import { ActionGroup } from "@/components/Elements/ActionGroup/ActionGroup";
+import { ActionGroup } from "@/components/Elements";
 import { ContentLayout } from "@/components/Layout";
 import useBookmark from "@/hooks/use-bookmark";
 import { useState } from "react";

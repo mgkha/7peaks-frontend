@@ -33,6 +33,10 @@ export const AppRoutes = () => {
         },
         { path: "/search", element: <SearchPage /> },
         { path: "/article", element: <ArticlePage /> },
+        {
+          path: "*",
+          element: <div>404</div>,
+        },
       ],
     },
   ]);
