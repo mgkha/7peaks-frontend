@@ -1,4 +1,9 @@
-import { GUARDIAN_API_KEY, GUARDIAN_API_URL, USE_LOCAL_PROXY } from "@/config";
+import {
+  GUARDIAN_API_KEY,
+  GUARDIAN_API_URL,
+  REMOTE_PROXY_URL,
+  USE_LOCAL_PROXY,
+} from "@/config";
 import Axios, { AxiosRequestConfig } from "axios";
 
 function authRequestInterceptor(config: AxiosRequestConfig) {
@@ -9,8 +14,13 @@ function authRequestInterceptor(config: AxiosRequestConfig) {
   return config;
 }
 
+const baseUrl =
+  process.env.REACT_APP_USE_HTTPS === "true"
+    ? GUARDIAN_API_URL
+    : REMOTE_PROXY_URL;
+
 export const axios = Axios.create({
-  baseURL: USE_LOCAL_PROXY === true ? "/" : GUARDIAN_API_URL,
+  baseURL: USE_LOCAL_PROXY === true ? "/" : baseUrl,
 });
 
 axios.interceptors.request.use(authRequestInterceptor);
