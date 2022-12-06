@@ -1,5 +1,7 @@
 # Seven Peaks Frontend
 
+Demo here https://7peaks-frontend.vercel.app/
+
 ## Project Setup
 
 1. Install dependencies
