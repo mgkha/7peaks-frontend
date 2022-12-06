@@ -32,3 +32,14 @@ export const categoryContainer = style({
     },
   },
 });
+
+export const endOfResult = style({
+  fontSize: "2rem",
+  color: "gray",
+  marginTop: "5rem",
+  // border: "1px solid red",
+  width: "100%",
+  display: "flex",
+  justifyContent: "center",
+  alignItems: "center",
+});

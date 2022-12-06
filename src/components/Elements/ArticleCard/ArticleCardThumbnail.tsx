@@ -32,7 +32,7 @@ export const ArticleCardThumbnail = ({
       <img
         className={newsThumbThumbnail}
         alt="thumbnail"
-        src={thumbnail || "/no-image.png"}
+        src={thumbnail || "/7peaks.png"}
       />
       <div className={newsThumbDescription}>
         <div>

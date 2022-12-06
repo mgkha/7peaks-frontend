@@ -4,6 +4,7 @@ import { createSearchParams } from "react-router-dom";
 import {
   categoryContainer,
   categorySection,
+  endOfResult,
   scrollSpinner,
 } from "../styles/index.css";
 
@@ -33,9 +34,8 @@ export const SearchResult = ({
       {isFetchingNextPage ? (
         <Spinner className={scrollSpinner} />
       ) : (
-        // <span style={{ fontSize: "3rem" }}>Loading ...</span>
         hasNextPage === false && (
-          <span style={{ fontSize: "3rem" }}>End of Result</span>
+          <div className={endOfResult}>End of Result</div>
         )
       )}
     </div>

@@ -1,5 +1,5 @@
 import { BsBookmarkFill, BsSortDown, BsSortUp } from "react-icons/bs";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import {
   actionGroup,
   bookmarkBtn,
@@ -20,6 +20,7 @@ export function ActionGroup({
   handleOnChangeOrderBy,
 }: ActionGroupProps) {
   const navigate = useNavigate();
+  const location = useLocation();
 
   return (
     <div className={actionGroupWrapper}>
@@ -35,17 +36,24 @@ export function ActionGroup({
             onClick={() => handleOnChangeOrderBy("newest")}
           />
         )}
-        <BsBookmarkFill
-          className={bookmarkIcon}
-          onClick={() => navigate("/bookmarks")}
-        />
+        {location.pathname !== "/bookmarks" && (
+          <BsBookmarkFill
+            className={bookmarkIcon}
+            onClick={() => navigate("/bookmarks")}
+          />
+        )}
       </div>
 
       <div className={actionGroup}>
-        <button className={bookmarkBtn} onClick={() => navigate("/bookmarks")}>
-          <BsBookmarkFill />
-          <span>View Bookmark</span>
-        </button>
+        {location.pathname !== "/bookmarks" && (
+          <button
+            className={bookmarkBtn}
+            onClick={() => navigate("/bookmarks")}
+          >
+            <BsBookmarkFill />
+            <span>View Bookmark</span>
+          </button>
+        )}
 
         <select
           className={sortingSelect}
