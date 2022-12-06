@@ -8,11 +8,11 @@
 // You can also remove this file if you'd prefer not to use a
 // service worker, and the Workbox build step will be skipped.
 
-import { clientsClaim } from 'workbox-core';
-import { ExpirationPlugin } from 'workbox-expiration';
-import { precacheAndRoute, createHandlerBoundToURL } from 'workbox-precaching';
-import { registerRoute } from 'workbox-routing';
-import { StaleWhileRevalidate } from 'workbox-strategies';
+import { clientsClaim } from "workbox-core";
+import { ExpirationPlugin } from "workbox-expiration";
+import { precacheAndRoute, createHandlerBoundToURL } from "workbox-precaching";
+import { registerRoute } from "workbox-routing";
+import { StaleWhileRevalidate } from "workbox-strategies";
 
 declare const self: ServiceWorkerGlobalScope;
 
@@ -27,17 +27,17 @@ precacheAndRoute(self.__WB_MANIFEST);
 // Set up App Shell-style routing, so that all navigation requests
 // are fulfilled with your index.html shell. Learn more at
 // https://developers.google.com/web/fundamentals/architecture/app-shell
-const fileExtensionRegexp = new RegExp('/[^/?]+\\.[^/]+$');
+const fileExtensionRegexp = new RegExp("/[^/?]+\\.[^/]+$");
 registerRoute(
   // Return false to exempt requests from being fulfilled by index.html.
   ({ request, url }: { request: Request; url: URL }) => {
     // If this isn't a navigation, skip.
-    if (request.mode !== 'navigate') {
+    if (request.mode !== "navigate") {
       return false;
     }
 
     // If this is a URL that starts with /_, skip.
-    if (url.pathname.startsWith('/_')) {
+    if (url.pathname.startsWith("/_")) {
       return false;
     }
 
@@ -50,17 +50,18 @@ registerRoute(
     // Return true to signal that we want to use the handler.
     return true;
   },
-  createHandlerBoundToURL(process.env.PUBLIC_URL + '/index.html')
+  createHandlerBoundToURL(process.env.PUBLIC_URL + "/index.html")
 );
 
 // An example runtime caching route for requests that aren't handled by the
 // precache, in this case same-origin .png requests like those from in public/
 registerRoute(
   // Add in any other file extensions or routing criteria as needed.
-  ({ url }) => url.origin === self.location.origin && url.pathname.endsWith('.png'),
+  ({ url }) =>
+    url.origin === self.location.origin && url.pathname.endsWith(".png"),
   // Customize this strategy as needed, e.g., by changing to CacheFirst.
   new StaleWhileRevalidate({
-    cacheName: 'images',
+    cacheName: "images",
     plugins: [
       // Ensure that once this runtime cache reaches a maximum size the
       // least-recently used images are removed.
@@ -71,10 +72,113 @@ registerRoute(
 
 // This allows the web app to trigger skipWaiting via
 // registration.waiting.postMessage({type: 'SKIP_WAITING'})
-self.addEventListener('message', (event) => {
-  if (event.data && event.data.type === 'SKIP_WAITING') {
+self.addEventListener("message", (event) => {
+  if (event.data && event.data.type === "SKIP_WAITING") {
     self.skipWaiting();
   }
 });
 
 // Any other custom service worker logic can go here.
+const cacheName = "offline-depenencies";
+const version = "v0.0.1";
+
+self.addEventListener("install", (event) => {
+  event.waitUntil(
+    caches.open(cacheName).then((cache) => {
+      return cache.addAll(["/", "/static"]);
+    })
+  );
+});
+
+self.addEventListener("activate", function (event) {
+  event.waitUntil(
+    caches.keys().then(function (keys) {
+      // Remove caches whose name is no longer valid
+      return Promise.all(
+        keys
+          .filter(function (key) {
+            return key.indexOf(version) !== 0;
+          })
+          .map(function (key) {
+            return caches.delete(key);
+          })
+      );
+    })
+  );
+});
+
+self.addEventListener("fetch", function (event) {
+  const request = event.request;
+
+  // Always fetch non-GET requests from the network
+  if (request.method !== "GET") {
+    event.respondWith(
+      fetch(request).catch(function () {
+        return caches.match("/offline");
+      }) as Promise<Response>
+    );
+    return;
+  }
+
+  // For HTML requests, try the network first, fall back to the cache,
+  // finally the offline page
+  if (
+    request.headers.get("Accept")?.indexOf("text/html") !== -1 &&
+    request.url.startsWith(this.origin)
+  ) {
+    // The request is text/html, so respond by caching the
+    // item or showing the /offline offline
+    event.respondWith(
+      fetch(request)
+        .then(function (response) {
+          // Stash a copy of this page in the cache
+          const copy = response.clone();
+          caches.open(version + cacheName).then(function (cache) {
+            cache.put(request, copy);
+          });
+          return response;
+        })
+        .catch(function () {
+          return caches.match(request).then(function (response) {
+            // return the cache response or the /offline page.
+            return response || caches.match("/offline");
+          });
+        }) as Promise<Response>
+    );
+    return;
+  }
+
+  // For non-HTML requests, look in the cache first, fall back to the network
+  if (
+    request.headers.get("Accept")?.indexOf("text/plain") === -1 &&
+    request.url.startsWith(this.origin)
+  ) {
+    event.respondWith(
+      caches.match(request).then(function (response) {
+        return (
+          response ||
+          fetch(request)
+            .then(function (response) {
+              const copy = response.clone();
+
+              if (
+                copy.headers.get("Content-Type")?.indexOf("text/plain") === -1
+              ) {
+                caches.open(version + cacheName).then(function (cache) {
+                  cache.put(request, copy);
+                });
+              }
+
+              return response;
+            })
+            .catch(function () {
+              // you can return an image placeholder here with
+              if (request.headers.get("Accept")?.indexOf("image") !== -1) {
+              }
+            })
+        );
+      }) as Promise<Response>
+    );
+    return;
+  }
+});
