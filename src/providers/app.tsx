@@ -5,17 +5,7 @@ import { BrowserRouter as Router } from "react-router-dom";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { queryClient } from "@/lib/react-query";
-import { Spinner, ErrorFallback } from "@/components/Elements";
-
-type OfflineStatusProps = {
-  isOffline: boolean;
-};
-
-const OfflineStatus = ({ isOffline }: OfflineStatusProps) => {
-  return (
-    <>{isOffline && <div className="offline-banner">You are offline</div>}</>
-  );
-};
+import { Spinner, ErrorFallback, OfflineBanner } from "@/components/Elements";
 
 type AppProviderProps = {
   children: React.ReactNode;
@@ -30,8 +20,8 @@ export const AppProvider = ({ children }: AppProviderProps) => {
 
   return (
     <React.Suspense fallback={<Spinner />}>
-      <OfflineStatus isOffline={isOffline} />
       <ErrorBoundary FallbackComponent={ErrorFallback}>
+        <OfflineBanner isOffline={isOffline} />
         <HelmetProvider>
           <QueryClientProvider client={queryClient}>
             {process.env.NODE_ENV !== "test" && <ReactQueryDevtools />}

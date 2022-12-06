@@ -6,6 +6,8 @@ import {
   DefaultOptions,
 } from "@tanstack/react-query";
 import { PromiseValue } from "type-fest";
+import { persistQueryClient } from "@tanstack/react-query-persist-client";
+import { createSyncStoragePersister } from "@tanstack/query-sync-storage-persister";
 
 const queryConfig: DefaultOptions = {
   queries: {
@@ -19,6 +21,17 @@ const queryConfig: DefaultOptions = {
 };
 
 export const queryClient = new QueryClient({ defaultOptions: queryConfig });
+
+const localStoragePersister = createSyncStoragePersister({
+  storage: window.localStorage,
+  key: "react-query-persistance",
+});
+// const sessionStoragePersister = createSyncStoragePersister({ storage: window.sessionStorage })
+
+persistQueryClient({
+  queryClient,
+  persister: localStoragePersister,
+});
 
 export type ExtractFnReturnType<FnType extends (...args: any) => any> =
   PromiseValue<ReturnType<FnType>>;

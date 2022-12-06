@@ -21,8 +21,8 @@ import {
 } from "./styles/style.css";
 
 import { CgSearch } from "react-icons/cg";
-import { Spinner } from "../Elements";
 import { useLoading } from "@/hooks/use-loading";
+import { Spinner } from "../Elements";
 
 type MainLayoutProps = {
   children: React.ReactNode;
@@ -34,7 +34,6 @@ export const MainLayout = ({ children }: MainLayoutProps) => {
   const location = useLocation();
   const [, setSearchParams] = useSearchParams();
   const [loading] = useLoading();
-
   return (
     <div className={layoutStyle}>
       <header className={headerStyle}>
