@@ -8,8 +8,8 @@ type HeadProps = {
 export const Head = ({ title = "", description = "" }: HeadProps = {}) => {
   return (
     <Helmet
-      title={title ? `${title} | 7Peaks` : undefined}
-      defaultTitle="7Peaks"
+      title={title ? `${title} | Seven Peaks` : undefined}
+      defaultTitle="Seven Peaks"
     >
       <meta name="description" content={description} />
     </Helmet>
