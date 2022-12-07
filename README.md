@@ -31,3 +31,9 @@ Demo here https://7peaks-frontend.vercel.app/
 - Flexible and reuseable components
 - Caching data
 - PWA with offline access
+
+## More features
+
+- Santinize html,svg to prevent XSS attack
+- Background Query for more data while online
+- Scroll to top button in mobile view
