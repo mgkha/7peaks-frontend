@@ -25,7 +25,7 @@ Demo here https://7peaks-frontend.vercel.app/
 ## This project is focused on
 
 - Mobile Responsive; Production ready
-- Clean code and easy to maintain
+- Clean code, test driven and easy to maintain
 - Organized file structure
 - No complex state management
 - Flexible and reuseable components
