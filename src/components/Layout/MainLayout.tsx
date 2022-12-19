@@ -23,17 +23,52 @@ import {
 import { CgSearch } from "react-icons/cg";
 import { useLoading } from "@/hooks/use-loading";
 import { Spinner } from "../Elements";
+import { useMounted } from "@/hooks/use-mounted";
 
 type MainLayoutProps = {
   children: React.ReactNode;
 };
 
+const debounceTime = 2000;
+
 export const MainLayout = ({ children }: MainLayoutProps) => {
   const searchRef = React.useRef<HTMLInputElement>(null);
   const navigate = useNavigate();
   const location = useLocation();
-  const [, setSearchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
   const [loading] = useLoading();
+  const [searchValue, setSearchValue] = React.useState("");
+  const isMounted = useMounted();
+
+  const searchFn = React.useCallback(
+    (q: string) => {
+      if (location.pathname === "/search") {
+        setSearchParams({ q });
+      } else {
+        navigate({
+          pathname: "/search",
+          search: createSearchParams({ q }).toString(),
+        });
+      }
+    },
+    [navigate, setSearchParams, location.pathname]
+  );
+
+  React.useEffect(() => {
+    if (searchParams.toString() === "") setSearchValue("");
+  }, [searchParams]);
+
+  React.useEffect(() => {
+    const delayDebounceFn = setTimeout(() => {
+      if (isMounted) {
+        searchValue && searchFn(searchValue);
+      }
+    }, debounceTime);
+    return () => {
+      clearTimeout(delayDebounceFn);
+    };
+  }, [searchValue, isMounted, searchFn]);
+
   return (
     <div className={layoutStyle}>
       <header className={headerStyle}>
@@ -48,20 +83,8 @@ export const MainLayout = ({ children }: MainLayoutProps) => {
               type="text"
               className={searchInputStyle}
               placeholder="Search all news"
-              onKeyDown={(e) => {
-                if (e.key === "Enter") {
-                  if (location.pathname === "/search") {
-                    setSearchParams({ q: e.currentTarget.value });
-                  } else {
-                    navigate({
-                      pathname: "/search",
-                      search: createSearchParams({
-                        q: e.currentTarget.value,
-                      }).toString(),
-                    });
-                  }
-                }
-              }}
+              value={searchValue}
+              onChange={(e) => setSearchValue(e.target.value)}
             />
             <button
               className={searchButtonStyle}
