@@ -12,7 +12,7 @@ import {
 
 type ActionGroupProps = {
   orderBy: string;
-  handleOnChangeOrderBy: any;
+  handleOnChangeOrderBy: (orderBy: string) => void;
 };
 
 export function ActionGroup({

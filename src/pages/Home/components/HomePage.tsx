@@ -25,11 +25,11 @@ export const HomePage = () => {
     <ContentLayout title="Top stories">
       <ActionGroup orderBy={orderBy} handleOnChangeOrderBy={setOrderBy} />
       <ArticlesList
-        articles={newsQuery.data}
+        articles={newsQuery.data || []}
         categoryNews={[
-          { categoryName: "sport", results: sportQuery.data },
-          { categoryName: "culture", results: cultureQuery.data },
-          { categoryName: "lifestyle", results: lifeStyleQuery.data },
+          { categoryName: "sport", results: sportQuery.data || [] },
+          { categoryName: "culture", results: cultureQuery.data || [] },
+          { categoryName: "lifestyle", results: lifeStyleQuery.data || [] },
         ]}
       />
     </ContentLayout>

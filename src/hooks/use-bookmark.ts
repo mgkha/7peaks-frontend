@@ -2,6 +2,14 @@ import { useCallback, useEffect, useState } from "react";
 import { useSnackbar } from "./use-snackbar";
 const bookmarkField = "bookmarks";
 
+export type Bookmark = {
+  id: string;
+  webTitle: string;
+  webPublicationDate: string;
+  trailText: string;
+  thumbnail: string;
+};
+
 const getBookmarksFromLocalStorage = () => {
   try {
     return JSON.parse(localStorage.getItem(bookmarkField) || "[]");
@@ -12,7 +20,9 @@ const getBookmarksFromLocalStorage = () => {
 
 const useBookmark = () => {
   const { addSnackbarMessage } = useSnackbar();
-  const [bookmarks, setBookmarks] = useState(getBookmarksFromLocalStorage());
+  const [bookmarks, setBookmarks] = useState<Bookmark[]>(
+    getBookmarksFromLocalStorage()
+  );
 
   // persist through tabs
   useEffect(() => {
@@ -31,7 +41,7 @@ const useBookmark = () => {
     webPublicationDate,
     trailText,
     thumbnail,
-  }: any) => {
+  }: Bookmark) => {
     setBookmarks([
       ...bookmarks,
       { id, webTitle, webPublicationDate, trailText, thumbnail },
@@ -40,7 +50,7 @@ const useBookmark = () => {
   };
 
   const removeBookmark = (id: string) => {
-    let index = bookmarks.findIndex((pd: any) => pd.id === id);
+    let index = bookmarks.findIndex((pd) => pd.id === id);
 
     if (index > -1) bookmarks.splice(index, 1);
 
@@ -49,8 +59,8 @@ const useBookmark = () => {
   };
 
   const hasBookmark = useCallback(
-    (id: any) => {
-      return bookmarks.findIndex((pd: any) => pd.id === id) !== -1;
+    (id: string) => {
+      return bookmarks.findIndex((pd) => pd.id === id) !== -1;
     },
     [bookmarks]
   );

@@ -1,3 +1,10 @@
+type ArticleFields = {
+  trailText: string;
+  main: string;
+  body: string;
+  thumbnail: string;
+};
+
 export type Article = {
   id: string;
   webTitle: string;
@@ -6,7 +13,7 @@ export type Article = {
   trailText: string;
   thumbnail: string;
   webPublicationDate: string;
-  fields: any;
+  fields: ArticleFields;
 };
 
 export type Category = {

@@ -1,7 +1,4 @@
-import {
-  ArticleCard,
-  ArticleCardThumbnail,
-} from "@/components/Elements";
+import { ArticleCard, ArticleCardThumbnail } from "@/components/Elements";
 import { Article, Category } from "@/pages/Article";
 import { createSearchParams } from "react-router-dom";
 import {
@@ -18,7 +15,12 @@ import {
   categoryTitle,
 } from "../styles/articleslist.css";
 
-export const ArticlesList = ({ articles = [], categoryNews = [] }: any) => {
+type ArticlesListProps = {
+  articles: Article[];
+  categoryNews: Category[];
+};
+
+export const ArticlesList = ({ articles, categoryNews }: ArticlesListProps) => {
   return (
     <div>
       <div className={articleSection}>

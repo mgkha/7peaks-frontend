@@ -4,10 +4,19 @@ import { v4 as uuidv4 } from "uuid";
 
 const DEFAULT_SNACKBAR_TIMEOUT_MS = 1500;
 
-export default function reducer(
-  state: SnackbarMessage[],
-  action: { type: string; payload: any }
-) {
+interface AppendAction {
+  type: "append";
+  payload: SnackbarMessage;
+}
+
+interface RemoveAction {
+  type: "remove";
+  payload: string;
+}
+
+type Action = AppendAction | RemoveAction;
+
+export default function reducer(state: SnackbarMessage[], action: Action) {
   switch (action.type) {
     case "append":
       action.payload.id = uuidv4();
@@ -51,7 +60,7 @@ export const SnackbarProvider = ({ children }: SnackbarProviderProps) => {
   }: SnackbarMessage) => {
     dispatch({
       type: "append",
-      payload: { message, timeout, nodeRef: createRef<Node>() },
+      payload: { message, timeout, nodeRef: createRef<HTMLDivElement>() },
     });
   };
 
